@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ym.dao.NewsMapper">
+    <resultMap id="newsBord" type="news">
+        <id column="newsid" javaType="int" property="newsId"/>
+    </resultMap>
+    <select id="getAllNews" resultType="news">
+      select newsid as newsId,title,content,writedate as writeDate,pic
+      from t_news
+    </select>
+
+    <select id="getNewsById" parameterType="int" resultType="com.ym.entity.News">
+        select newsid as newsId,title,content,writedate as writeDate,pic
+        from t_news
+        where newsid = #{newsId}
+    </select>
+
+    <select id="getNewsByPro" parameterType="news" resultType="com.ym.entity.News">
+        select newsid as newsId,title,content,writedate as writeDate,pic
+        from t_news
+        <where>
+            <if test="writeDate != null">
+                writedate &gt; #{writeDate}
+            </if>
+            <if test="board !=null and board.boardId != 0 ">
+                and boardid = #{board.boardId}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>
+
