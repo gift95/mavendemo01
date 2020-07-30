@@ -8,6 +8,9 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import java.io.IOException;
 import java.io.Reader;
 
+/**
+ * @author liu
+ */
 public class SqlSessionFactoryUtil {
     private static SqlSessionFactory factory;
 

@@ -1,0 +1,578 @@
+From 4f81299b8fcf467597b9773a6f866b2cdf90f3e0 Mon Sep 17 00:00:00 2001
+From: liuyuexong <851046264@qq.com>
+Date: Thu, 30 Jul 2020 19:41:12 +0800
+Subject: [PATCH] 重构
+
+---
+ .gitignore                                           | 30 ++++++++++++++++++++++++++++++
+ .idea/dataSources.xml                                | 11 +++++++++++
+ .idea/jarRepositories.xml                            | 20 ++++++++++++++++++++
+ .idea/mavendemo01.iml                                |  2 ++
+ .idea/misc.xml                                       |  3 +++
+ .idea/sqldialects.xml                                |  7 +++++++
+ pom.xml                                              | 30 ++++++++++++++++++++++++++++--
+ src/main/java/com/ym/dao/NewsMapper.java             | 16 ++++++++++++++++
+ src/main/java/com/ym/entity/Board.java               | 42 ++++++++++++++++++++++++++++++++++++++++++
+ src/main/java/com/ym/entity/News.java                | 72 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ src/main/java/com/ym/mapper/NewsMapper.xml           | 35 +++++++++++++++++++++++++++++++++++
+ src/main/java/com/ym/test/Demo.java                  | 39 +++++++++++++++++++++++++++++++++++++++
+ src/main/java/com/ym/util/SqlSessionFactoryUtil.java | 41 +++++++++++++++++++++++++++++++++++++++++
+ src/main/java/org/ym/entry/User.java                 | 15 ---------------
+ src/main/resources/druid.properties                  |  7 +++++++
+ src/main/resources/log4j.properties                  | Bin 0 -> 2890 bytes
+ src/main/resources/mybatis.xml                       | 25 +++++++++++++++++++++++++
+ 17 files changed, 378 insertions(+), 17 deletions(-)
+ create mode 100644 .gitignore
+ create mode 100644 .idea/dataSources.xml
+ create mode 100644 .idea/jarRepositories.xml
+ create mode 100644 .idea/mavendemo01.iml
+ create mode 100644 .idea/sqldialects.xml
+ create mode 100644 src/main/java/com/ym/dao/NewsMapper.java
+ create mode 100644 src/main/java/com/ym/entity/Board.java
+ create mode 100644 src/main/java/com/ym/entity/News.java
+ create mode 100644 src/main/java/com/ym/mapper/NewsMapper.xml
+ create mode 100644 src/main/java/com/ym/test/Demo.java
+ create mode 100644 src/main/java/com/ym/util/SqlSessionFactoryUtil.java
+ delete mode 100644 src/main/java/org/ym/entry/User.java
+ create mode 100644 src/main/resources/druid.properties
+ create mode 100644 src/main/resources/log4j.properties
+ create mode 100644 src/main/resources/mybatis.xml
+
+diff --git a/.gitignore b/.gitignore
+new file mode 100644
+index 0000000..977dc75
+--- /dev/null
++++ b/.gitignore
+@@ -0,0 +1,30 @@
++# Created by .ignore support plugin (hsz.mobi)
++### Java template
++# Compiled class file
++*.class
++
++# Log file
++*.log
++
++# BlueJ files
++*.ctxt
++
++# Mobile Tools for Java (J2ME)
++.mtj.tmp/
++
++# Package Files #
++*.jar
++*.war
++*.nar
++*.ear
++*.zip
++*.tar.gz
++*.rar
++
++# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
++hs_err_pid*
++
++将删除 .idea/mavendemo01.iml
++将删除 src/main/resources/
++将删除 src/test/
++将删除 target/
+diff --git a/.idea/dataSources.xml b/.idea/dataSources.xml
+new file mode 100644
+index 0000000..f42fa4e
+--- /dev/null
++++ b/.idea/dataSources.xml
+@@ -0,0 +1,11 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
++    <data-source source="LOCAL" name="news@localhost" uuid="c5f79d84-1e17-4f11-89a1-2acb42d0bd55">
++      <driver-ref>mysql.8</driver-ref>
++      <synchronize>true</synchronize>
++      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
++      <jdbc-url>jdbc:mysql://localhost:3306/news</jdbc-url>
++    </data-source>
++  </component>
++</project>
+\ No newline at end of file
+diff --git a/.idea/jarRepositories.xml b/.idea/jarRepositories.xml
+new file mode 100644
+index 0000000..2a89eda
+--- /dev/null
++++ b/.idea/jarRepositories.xml
+@@ -0,0 +1,20 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="RemoteRepositoriesConfiguration">
++    <remote-repository>
++      <option name="id" value="central" />
++      <option name="name" value="Maven Central repository" />
++      <option name="url" value="https://repo1.maven.org/maven2" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="central" />
++      <option name="name" value="Central Repository" />
++      <option name="url" value="http://maven.aliyun.com/nexus/content/groups/public/" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="jboss.community" />
++      <option name="name" value="JBoss Community repository" />
++      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
++    </remote-repository>
++  </component>
++</project>
+\ No newline at end of file
+diff --git a/.idea/mavendemo01.iml b/.idea/mavendemo01.iml
+new file mode 100644
+index 0000000..78b2cc5
+--- /dev/null
++++ b/.idea/mavendemo01.iml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module type="JAVA_MODULE" version="4" />
+\ No newline at end of file
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+index 4b661a5..3ccb27b 100644
+--- a/.idea/misc.xml
++++ b/.idea/misc.xml
+@@ -1,6 +1,9 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="ExternalStorageConfigurationManager" enabled="true" />
++  <component name="JavaScriptSettings">
++    <option name="languageLevel" value="ES6" />
++  </component>
+   <component name="MavenProjectsManager">
+     <option name="originalFiles">
+       <list>
+diff --git a/.idea/sqldialects.xml b/.idea/sqldialects.xml
+new file mode 100644
+index 0000000..8f2b5b3
+--- /dev/null
++++ b/.idea/sqldialects.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="SqlDialectMappings">
++    <file url="file://$PROJECT_DIR$/src/main/java/com/ym/mapper/NewsMapper.xml" dialect="GenericSQL" />
++    <file url="PROJECT" dialect="MySQL" />
++  </component>
++</project>
+\ No newline at end of file
+diff --git a/pom.xml b/pom.xml
+index c3b45ba..8145349 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -7,7 +7,33 @@
+     <groupId>org.example</groupId>
+     <artifactId>mavendemo01</artifactId>
+     <version>1.0-SNAPSHOT</version>
+-
++    <dependencies>
++        <dependency>
++            <groupId>mysql</groupId>
++            <artifactId>mysql-connector-java</artifactId>
++            <version>8.0.21</version>
++        </dependency>
++        <dependency>
++            <groupId>apache-log4j</groupId>
++            <artifactId>log4j</artifactId>
++            <version>1.2.15</version>
++        </dependency>
++        <dependency>
++            <groupId>com.alibaba</groupId>
++            <artifactId>druid</artifactId>
++            <version>1.1.20</version>
++        </dependency>
++        <dependency>
++            <groupId>org.mybatis</groupId>
++            <artifactId>mybatis</artifactId>
++            <version>3.5.0</version>
++        </dependency>
++        <dependency>
++            <groupId>javax.servlet.jsp.jstl</groupId>
++            <artifactId>jstl</artifactId>
++            <version>1.2</version>
++        </dependency>
++    </dependencies>
+     <build>
+         <finalName>web</finalName>
+         <plugins>
+@@ -28,7 +54,7 @@
+             </plugin>
+             <plugin>
+                 <groupId>org.apache.tomcat.maven</groupId>
+-                <artifactId>tomcat7-maven-plugn</artifactId>
++                <artifactId>tomcat7-maven-plugin</artifactId>
+                 <version>2.1</version>
+                 <configuration>
+                     <port>8080</port>
+diff --git a/src/main/java/com/ym/dao/NewsMapper.java b/src/main/java/com/ym/dao/NewsMapper.java
+new file mode 100644
+index 0000000..adcb3ff
+--- /dev/null
++++ b/src/main/java/com/ym/dao/NewsMapper.java
+@@ -0,0 +1,16 @@
++package com.ym.dao;
++
++import com.ym.entity.News;
++
++import java.util.List;
++
++public interface NewsMapper {
++
++    List<News> getAllNews();
++
++    News getNewsById(int newsId);
++
++    List<News> getNewsByPro(News news);
++
++
++}
+diff --git a/src/main/java/com/ym/entity/Board.java b/src/main/java/com/ym/entity/Board.java
+new file mode 100644
+index 0000000..6d42959
+--- /dev/null
++++ b/src/main/java/com/ym/entity/Board.java
+@@ -0,0 +1,42 @@
++package com.ym.entity;
++
++import java.io.Serializable;
++
++public class Board implements Serializable {
++    private int boardId;
++    private String boardName;
++    private String boardDesc;
++
++    public Board() {
++    }
++
++    public Board(int boardId, String boardName, String boardDesc) {
++        this.boardId = boardId;
++        this.boardName = boardName;
++        this.boardDesc = boardDesc;
++    }
++
++    public int getBoardId() {
++        return boardId;
++    }
++
++    public void setBoardId(int boardId) {
++        this.boardId = boardId;
++    }
++
++    public String getBoardName() {
++        return boardName;
++    }
++
++    public void setBoardName(String boardName) {
++        this.boardName = boardName;
++    }
++
++    public String getBoardDesc() {
++        return boardDesc;
++    }
++
++    public void setBoardDesc(String boardDesc) {
++        this.boardDesc = boardDesc;
++    }
++}
+diff --git a/src/main/java/com/ym/entity/News.java b/src/main/java/com/ym/entity/News.java
+new file mode 100644
+index 0000000..6585fb4
+--- /dev/null
++++ b/src/main/java/com/ym/entity/News.java
+@@ -0,0 +1,72 @@
++package com.ym.entity;
++
++import java.io.Serializable;
++
++public class News implements Serializable {
++    private int newsId;
++    private String title;
++    private String content;
++    private String writeDate;
++    private String pic;
++    private Board board;
++
++    public News() {
++    }
++
++    public News(String title, String content, String pic, Board board) {
++        this.title = title;
++        this.content = content;
++        this.pic = pic;
++        this.board = board;
++    }
++
++    public int getNewsId() {
++        return newsId;
++    }
++
++    public void setNewsId(int newsId) {
++        this.newsId = newsId;
++    }
++
++    public String getTitle() {
++        return title;
++    }
++
++    public void setTitle(String title) {
++        this.title = title;
++    }
++
++    public String getContent() {
++        return content;
++    }
++
++    public void setContent(String content) {
++        this.content = content;
++    }
++
++    public String getWriteDate() {
++        return writeDate;
++    }
++
++    public void setWriteDate(String writeDate) {
++        this.writeDate = writeDate;
++    }
++
++    public String getPic() {
++        return pic;
++    }
++
++    public void setPic(String pic) {
++        this.pic = pic;
++    }
++
++    public Board getBoard() {
++        return board;
++    }
++
++    public void setBoard(Board board) {
++        this.board = board;
++    }
++
++
++}
+diff --git a/src/main/java/com/ym/mapper/NewsMapper.xml b/src/main/java/com/ym/mapper/NewsMapper.xml
+new file mode 100644
+index 0000000..3bddb5f
+--- /dev/null
++++ b/src/main/java/com/ym/mapper/NewsMapper.xml
+@@ -0,0 +1,35 @@
++<?xml version="1.0" encoding="UTF-8" ?>
++<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
++        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
++
++<mapper namespace="com.ym.dao.NewsMapper">
++    <resultMap id="newsBord" type="news">
++        <id column="newsid" javaType="int" property="newsId"/>
++    </resultMap>
++    <select id="getAllNews" resultType="news">
++      select newsid as newsId,title,content,writedate as writeDate,pic
++      from t_news
++    </select>
++
++    <select id="getNewsById" parameterType="int" resultType="com.ym.entity.News">
++        select newsid as newsId,title,content,writedate as writeDate,pic
++        from t_news
++        where newsid = #{newsId}
++    </select>
++
++    <select id="getNewsByPro" parameterType="news" resultType="com.ym.entity.News">
++        select newsid as newsId,title,content,writedate as writeDate,pic
++        from t_news
++        <where>
++            <if test="writeDate != null">
++                writedate &gt; #{writeDate}
++            </if>
++            <if test="board !=null and board.boardId != 0 ">
++                and boardid = #{board.boardId}
++            </if>
++        </where>
++    </select>
++
++
++</mapper>
++
+diff --git a/src/main/java/com/ym/test/Demo.java b/src/main/java/com/ym/test/Demo.java
+new file mode 100644
+index 0000000..172ad05
+--- /dev/null
++++ b/src/main/java/com/ym/test/Demo.java
+@@ -0,0 +1,39 @@
++package com.ym.test;
++
++import com.ym.dao.NewsMapper;
++import com.ym.entity.News;
++import com.ym.util.SqlSessionFactoryUtil;
++import org.apache.ibatis.session.SqlSession;
++
++import java.util.List;
++
++public class Demo {
++
++    public static void main(String[] args) {
++        SqlSession session = SqlSessionFactoryUtil.getSession();
++        NewsMapper newsMapper = session.getMapper(NewsMapper.class);
++
++      /*  List<News> newsList = newsMapper.getAllNews();
++
++        for (News n : newsList) {
++            System.out.println(n.getNewsId() + "," + n.getTitle() + "," + n.getContent());
++        }*/
++
++        /*News n = newsMapper.getNewsById(4);
++        System.out.println(n.getNewsId() + "," + n.getTitle() + "," + n.getContent());*/
++
++        News n = new News();
++        n.setWriteDate("2020-7-25");
++
++/*
++        Board b = new Board();
++        b.setBoardId(4);
++        n.setBoard(b);
++*/
++        List<News> newsList = newsMapper.getNewsByPro(n);
++
++        for (News news : newsList) {
++            System.out.println(news.getNewsId() + "," + news.getTitle() + "," + news.getContent());
++        }
++    }
++}
+diff --git a/src/main/java/com/ym/util/SqlSessionFactoryUtil.java b/src/main/java/com/ym/util/SqlSessionFactoryUtil.java
+new file mode 100644
+index 0000000..ea62118
+--- /dev/null
++++ b/src/main/java/com/ym/util/SqlSessionFactoryUtil.java
+@@ -0,0 +1,41 @@
++package com.ym.util;
++
++import org.apache.ibatis.io.Resources;
++import org.apache.ibatis.session.SqlSession;
++import org.apache.ibatis.session.SqlSessionFactory;
++import org.apache.ibatis.session.SqlSessionFactoryBuilder;
++
++import java.io.IOException;
++import java.io.Reader;
++
++public class SqlSessionFactoryUtil {
++    private static SqlSessionFactory factory;
++
++    static {
++        Reader reader = null;
++
++        try {
++            reader = Resources.getResourceAsReader("mybatis.xml");
++            factory = new SqlSessionFactoryBuilder().build(reader);
++        } catch (IOException e) {
++            e.printStackTrace();
++        } finally {
++            if (reader != null) {
++                try {
++                    reader.close();
++                } catch (IOException e) {
++                    e.printStackTrace();
++                }
++            }
++        }
++    }
++
++    private SqlSessionFactoryUtil() {
++    }
++
++    public static SqlSession getSession() {
++        return factory.openSession();
++    }
++
++
++}
+diff --git a/src/main/java/org/ym/entry/User.java b/src/main/java/org/ym/entry/User.java
+deleted file mode 100644
+index d4d6046..0000000
+--- a/src/main/java/org/ym/entry/User.java
++++ /dev/null
+@@ -1,15 +0,0 @@
+-package org.ym.entry;
+-
+-/**
+- * @author:liuyuexiong
+- * @mail:851046264@qq.com
+- * @date:2020/07/30
+- * @time:14/59
+- */
+-
+-
+-public class User {
+-    public static void main(String[] args) {
+-        System.out.println("第一个Maven");
+-    }
+-}
+diff --git a/src/main/resources/druid.properties b/src/main/resources/druid.properties
+new file mode 100644
+index 0000000..f05ab22
+--- /dev/null
++++ b/src/main/resources/druid.properties
+@@ -0,0 +1,7 @@
++driverClassName=com.mysql.jdbc.Driver
++url=jdbc:mysql://127.0.0.1:3306/news?useUnicode=true&characterEncoding=UTF-8
++username=root
++password=123456
++initialSize=5
++maxActive=10
++maxWait=3000
+\ No newline at end of file
+diff --git a/src/main/resources/log4j.properties b/src/main/resources/log4j.properties
+new file mode 100644
+index 0000000000000000000000000000000000000000..039578e9f780a32ef7b89ff4f3ee46e0159071ac
+GIT binary patch
+literal 2890
+zc%02v%Wl&^6g}%o{DY;)E1XbOz#@_t1)G=JggRkWRnR7;2}<lRnMR5#=%x}276|bX
+z-S7?k25T1mg)UeCXYM4$u_&@>)u7R2=04`!JNF*P{`sSV3N}9`NAKdZ#sDeyaT~8t
+z!w8Df2r*ZUKG!jBU<DN!4!*okj_lrOvnS2DlxH?Xw=W1jx?J~gK-nXbrkqmJlmgCh
+z0sGU3?_1xR>5J9qq;og=yyxK0k#?D%$uJRgMNJmj=c?#y{dUnok6yI}g!|klJe5)#
+zV?BpgE?y07dMLTEiQd9g>@kM4S)a0q1A0tL+~+CvT4E|<Ze&hhCi1*a6Y(6A4Mtjw
+z<zpKzs<=bc9rn;A)*%t>sA7|&N?n(>M;vulWys$#hsRo(@rJgcRIkSfU0Pk{;S$}Y
+z-mH0+1Z2)VJi|lECvR^?r;U}y@#HlA`g}F=X{+NF#}j5c;WT^8%C_)XV@-6nE@SS@
+zU6j;$Uf1H>3kr28puSJd6p^rQKq;a1foT7Qg8}FKv`?v?yOZ6mo##;uF`I|aN+~iS
+zE_k-hdn>7MPwv>2ync787|L~WKOe6c<6U8NQI;EaJA6vav!R9CihJ{{RL}LJnZ~)0
+z@gaE=p~<;?#)nH{e0b%I4==&^@B+qXJ5>zjIvJmj_rEdTVP8!L`b5s(W{~-^sL?+6
+zGw-n1v}SAXv2uTV$9prhmoq+jnSZLXaV^(1XG^N87~3%PF&gA+a{;?-UgdMK{Y>c5
+ikuSJZI=Gx%T2dAJEo5-@(lUwUDLvp`GpqQ@GWiAX{RDsj
+
+literal 0
+Hc$@<O00001
+
+diff --git a/src/main/resources/mybatis.xml b/src/main/resources/mybatis.xml
+new file mode 100644
+index 0000000..df3e9be
+--- /dev/null
++++ b/src/main/resources/mybatis.xml
+@@ -0,0 +1,25 @@
++<?xml version="1.0" encoding="UTF-8" ?>
++<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
++        "http://mybatis.org/dtd/mybatis-3-config.dtd">
++
++<configuration>
++
++    <properties resource="druid.properties"/>
++    <typeAliases>
++        <package name="com.ym.entity"/>
++    </typeAliases>
++    <environments default="development">
++        <environment id="development">
++            <transactionManager type="JDBC"/>
++            <dataSource type="POOLED">
++                <property name="driver" value="${driverClassName}"/>
++                <property name="url" value="${url}"/>
++                <property name="username" value="${username}"/>
++                <property name="password" value="${password}"/>
++            </dataSource>
++        </environment>
++    </environments>
++    <mappers>
++        <mapper resource="com/ym/mapper/NewsMapper.xml"/>
++    </mappers>
++</configuration>    
+\ No newline at end of file
+--
+libgit2 0.27.7
+

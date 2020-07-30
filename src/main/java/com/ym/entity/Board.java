@@ -1,7 +1,15 @@
 package com.ym.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 
+/**
+ * @author liuyuexiong
+ */
+@Getter
+@Setter
 public class Board implements Serializable {
     private int boardId;
     private String boardName;
@@ -16,27 +24,4 @@ public class Board implements Serializable {
         this.boardDesc = boardDesc;
     }
 
-    public int getBoardId() {
-        return boardId;
-    }
-
-    public void setBoardId(int boardId) {
-        this.boardId = boardId;
-    }
-
-    public String getBoardName() {
-        return boardName;
-    }
-
-    public void setBoardName(String boardName) {
-        this.boardName = boardName;
-    }
-
-    public String getBoardDesc() {
-        return boardDesc;
-    }
-
-    public void setBoardDesc(String boardDesc) {
-        this.boardDesc = boardDesc;
-    }
 }
